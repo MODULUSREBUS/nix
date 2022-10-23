@@ -5,6 +5,6 @@ with pkgs;
 mkShell {
   buildInputs = [
     git
-    hub
+    gh
   ];
 }

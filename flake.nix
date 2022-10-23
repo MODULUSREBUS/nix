@@ -14,6 +14,10 @@
   outputs = { self, flake-utils, nixpkgs, rust-overlay }:
     {
       lib = flake-utils.lib;
+      templates.default = {
+        path = ./template;
+        description = "MODULUSREBUS rust flake";
+      };
     }
     //
     flake-utils.lib.eachDefaultSystem (system: rec
@@ -25,7 +29,7 @@
         ];
       });
 
-      devShell = (import ./shell.nix {
+      devShells.default = (import ./shell.nix {
         pkgs = packages;
       });
     });
