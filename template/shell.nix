@@ -19,9 +19,11 @@ mkShell {
     git
     gh
     gnumake
-    pkg-config
-    openssl
 
     rust
+    rls
+
+    pkg-config
+    openssl
   ];
 }
