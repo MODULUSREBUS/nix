@@ -14,23 +14,29 @@
   outputs = { self, flake-utils, nixpkgs, rust-overlay }:
     {
       lib = flake-utils.lib;
+
       templates.default = {
         path = ./template;
         description = "MODULUSREBUS rust flake";
       };
     }
     //
-    flake-utils.lib.eachDefaultSystem (system: rec
+    flake-utils.lib.eachDefaultSystem (system:
     {
-      packages = (import nixpkgs {
-        inherit system;
-        overlays = [
-          rust-overlay.overlays.default
-        ];
-      });
+      packages = let
+        pkgs = (import nixpkgs {
+          inherit system;
+          overlays = [
+            rust-overlay.overlays.default
+          ];
+        });
+      in pkgs // {
+        twiggy = pkgs.callPackage ./pkgs/twiggy.nix { };
+        wasm-bindgen-cli = pkgs.callPackage ./pkgs/wasm-bindgen-cli.nix { };
+      };
 
       devShells.default = (import ./shell.nix {
-        pkgs = packages;
+        pkgs = self.packages.${system};
       });
     });
 }
