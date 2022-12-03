@@ -1,7 +1,14 @@
 {
   inputs = {
-    flake-utils.url = github:numtide/flake-utils/master;
     nixpkgs.url = github:NixOS/nixpkgs/nixos-22.05;
+    flake-utils.url = github:numtide/flake-utils/master;
+    devshell = {
+      url = "github:numtide/devshell/master";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
     rust-overlay = {
       url = github:oxalica/rust-overlay/master;
       inputs = {
@@ -11,7 +18,7 @@
     };
   };
 
-  outputs = { self, flake-utils, nixpkgs, rust-overlay }:
+  outputs = { self, nixpkgs, flake-utils, devshell, rust-overlay }:
     {
       lib = flake-utils.lib;
 
@@ -27,6 +34,7 @@
         pkgs = (import nixpkgs {
           inherit system;
           overlays = [
+            devshell.overlay
             rust-overlay.overlays.default
           ];
         });
