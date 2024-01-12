@@ -22,9 +22,20 @@
     {
       lib = flake-utils.lib;
 
-      templates.default = {
-        path = ./template;
-        description = "MODULUSREBUS rust flake";
+      templates = rec {
+        shell = {
+          path = ./templates/shell;
+          description = "MODULUSREBUS flake";
+        };
+        rust = {
+          path = ./templates/rust;
+          description = "MODULUSREBUS rust flake";
+        };
+        nodejs = {
+          path = ./templates/nodejs;
+          description = "MODULUSREBUS nodejs flake";
+        };
+        default = shell;
       };
     }
     //
